@@ -1,0 +1,101 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/user",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 6002
+        }
+      ],
+      "UpstreamPathTemplate": "/product",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/transaction",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 6003
+        }
+      ],
+      "UpstreamPathTemplate": "/transaction",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/getbyid/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 6001
+        }
+      ],
+      "UpstreamPathTemplate": "/user/getbyid/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "Key": "user-profile"
+    },
+    {
+      "DownstreamPathTemplate": "/api/transaction/getbyuserid/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 6003
+        }
+      ],
+      "UpstreamPathTemplate": "/transaction/getbyuserid/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "Key": "user-transactions"
+    }
+  ],
+  "Aggregates": [
+    {
+      "ReRouteKeys": [
+        "user-transactions",
+        "user-profile"
+      ],
+      "UpstreamPathTemplate": "/user-transactions/{id}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://host.docker.internal:5000",
+    "RateLimitOptions": {
+      "DisableRateLimitHeaders": false,
+      "QuotaExceededMessage": "Customize Tips!",
+      "HttpStatusCode": 999,
+      "ClientIdHeader": "Test"
+    }
+  }
+}

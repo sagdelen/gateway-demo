@@ -1,1 +1,1 @@
-# gateway-demo
+# Ocelot Gateway Demo Project
